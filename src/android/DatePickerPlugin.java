@@ -74,13 +74,10 @@ public class DatePickerPlugin extends CordovaPlugin {
 		Runnable runnable;
 		JsonDate jsonDate = new JsonDate().fromJson(data);
 
-		Log.d("DEBUG", jsonDate.toString());
-
     // Retrieve Android theme
     JSONObject options = data.optJSONObject(0);
     int theme = options.optInt("androidTheme", 1);
     int step = options.optInt("step",1);
-    Log.d("STEP", String.format("%d",step));
 
 		if (ACTION_TIME.equalsIgnoreCase(jsonDate.action)) {
 			runnable = runnableTimeDialog(datePickerPlugin, theme, step, currentCtx,
@@ -108,7 +105,6 @@ public class DatePickerPlugin extends CordovaPlugin {
 
 		@Override
 		public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-			Log.d("DEBUG 03", "onTimeChanged()");
 			mTimePicker = view;
 		};
 
@@ -122,11 +118,9 @@ public class DatePickerPlugin extends CordovaPlugin {
 
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			Log.d("DEBUG", "onClick()");
 			switch (which) {
 				case BUTTON_POSITIVE:
 					if (mTimeSetListener != null) {
-						Log.d("DEBUG", "mTimeSetListener != null");
 						mTimeSetListener.onTimeSet(
 								mTimePicker,
 								mTimePicker.getCurrentHour(),
@@ -157,15 +151,11 @@ public class DatePickerPlugin extends CordovaPlugin {
 				minuteSpinner.setMaxValue((60 / TIME_PICKER_INTERVAL) - 1);
 				minuteSpinner.setWrapSelectorWheel(true);
 				//minuteSpinner.setMaxValue(59);
-				Log.d("minuteSpinner MaxValue", String.format("%d",minuteSpinner.getMaxValue()));
 				List<String> displayedValues = new ArrayList<String>();
 				for (int i = 0; i < 60; i += TIME_PICKER_INTERVAL)
 				{
-					Log.d("displayedValues", String.format("%02d", i));
 					displayedValues.add(String.format("%02d", i));
-					//minuteSpinner.setMaxValue(i);
 				}
-				//Log.d("minuteSpinner MaxValue", String.format("%d",minuteSpinner.getMaxValue()));
 				minuteSpinner.setDisplayedValues(displayedValues.toArray(new String[displayedValues.size()]));
 			}
 			catch (Exception e)
@@ -192,7 +182,6 @@ public class DatePickerPlugin extends CordovaPlugin {
 				if(flag == 0) {
 					timeDialog = new CustomTimePickerDialog(currentCtx, theme, step, timeSetListener, jsonDate.hour, jsonDate.minutes, jsonDate.is24Hour) {
 						public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-							Log.d("DEBUG 02", "onTimeChanged()");
 							timePicker = view;
 							timePickerHour = hourOfDay;
 							timePickerMinute = minute;
@@ -205,7 +194,6 @@ public class DatePickerPlugin extends CordovaPlugin {
 				else {
 					timeDialog = new TimePickerDialog(currentCtx, theme, timeSetListener, jsonDate.hour, jsonDate.minutes, jsonDate.is24Hour) {
 						public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-							Log.d("DEBUG 01", "onTimeChanged()");
 							timePicker = view;
 							timePickerHour = hourOfDay;
 							timePickerMinute = minute;
